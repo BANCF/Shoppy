@@ -43,8 +43,8 @@ public class LoginActivity extends AppCompatActivity {
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     ProgressDialog progressDialog;
 
-    FirebaseAuth mAuth;
-    FirebaseUser mUser;
+    FirebaseAuth firebaseAuth;
+    FirebaseUser user;
     String email, password, mobile;
     ImageView btnFacebook, btnGoogle;
     CompositeDisposable compositeDisposable;
@@ -70,8 +70,8 @@ public class LoginActivity extends AppCompatActivity {
         forgotPassword = findViewById(R.id.forgotPassword);//
 
         progressDialog = new ProgressDialog(this);
-        mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
+        firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
         btnFacebook = findViewById(R.id.btnFacebook);
         btnGoogle = findViewById(R.id.btnGoogle);
 
@@ -188,23 +188,42 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             Paper.book().write("email",str_email);
             Paper.book().write("password",str_pass);
-            compositeDisposable.add(apiBanHang.dangNhap(str_email,str_pass)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(userModel -> {
-                        if(userModel.isSuccess()){
-                            Ultils.user_current = userModel.getResult().get(0);//do cái result là 1 cái list => lấy ptu first
-                            //Lưu lại thông tin người dùng
-                            Paper.book().write("user",userModel.getResult().get(0));
-                            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    },throwable -> {
-                        Toast.makeText(getApplicationContext(),throwable.getMessage(),Toast.LENGTH_SHORT).show();
-                    }
-                    ));
+            if(user!=null){
+                //user da co dang nhap Firebase
+                dangNhap(str_email,str_pass);
+            }else{
+                //user da signout
+                firebaseAuth.signInWithEmailAndPassword(str_email,str_pass)
+                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if(task.isSuccessful()){
+                                    dangNhap(str_email,str_pass);
+                                }
+                            }
+                        });
+            }
+
         }
+    }
+
+    private void dangNhap(String str_email,String str_pass){
+        compositeDisposable.add(apiBanHang.dangNhap(str_email,str_pass)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(userModel -> {
+                            if(userModel.isSuccess()){
+                                Ultils.user_current = userModel.getResult().get(0);//do cái result là 1 cái list => lấy ptu first
+                                //Lưu lại thông tin người dùng
+                                Paper.book().write("user",userModel.getResult().get(0));
+                                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        },throwable -> {
+                            Toast.makeText(getApplicationContext(),throwable.getMessage(),Toast.LENGTH_SHORT).show();
+                        }
+                ));
     }
 
 //    private void sendUserToNextActivity() {

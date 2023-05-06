@@ -39,7 +39,7 @@
     <LinearLayout
         android:id="@+id/layout1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="250dp"
         android:layout_marginTop="5dp"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@+id/toolbarChiTiet">
@@ -58,6 +58,7 @@
 
             <TextView
                 android:id="@+id/tvTenSp"
+                android:layout_marginStart="6dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -69,8 +70,9 @@
                 android:id="@+id/tvGiaSp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
                 android:text="@string/gia_25000"
                 android:textColor="@color/red"
                 android:textSize="15sp"
@@ -80,9 +82,9 @@
                 android:id="@+id/spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="10dp"
                 android:background="@drawable/spinner"
                 android:gravity="center" />
 
@@ -97,7 +99,6 @@
                 android:text="@string/them_vo_gio_hang"
                 android:textColor="@color/white"
                 android:textSize="12sp" />
-
 
         </LinearLayout>
 

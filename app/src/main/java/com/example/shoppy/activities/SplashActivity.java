@@ -23,20 +23,20 @@ public class SplashActivity extends AppCompatActivity {
                 }catch (Exception ex){
 
                 }finally {
-                    if(Paper.book().read("user")==null){
+//                    if(Paper.book().read("user")==null){
                         Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
                         startActivity(intent);
                         finish();
-                    }else {
-                        Intent home = new Intent(getApplicationContext(),MainActivity.class);
-                        startActivity(home);
-                        finish();
+//                    }else {
+//                        Intent home = new Intent(getApplicationContext(),MainActivity.class);
+//                        startActivity(home);
+//                        finish();
                     }
 
 
 
                 }
-            }
+//            }
         };
         thread.start();
     }

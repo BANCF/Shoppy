@@ -8,12 +8,16 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarDT"
+
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/appbar_color"
         app:layout_constraintTop_toTopOf="parent"
+        android:theme="@style/BaseTheme"
         app:titleTextColor="@color/white"
-        app:title="Điện thoại"></androidx.appcompat.widget.Toolbar>
+        app:title="Sản phẩm">
+
+    </androidx.appcompat.widget.Toolbar>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycleviewDT"

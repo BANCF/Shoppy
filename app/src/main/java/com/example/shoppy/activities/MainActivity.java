@@ -12,6 +12,8 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -33,7 +35,10 @@ import com.example.shoppy.model.User;
 import com.example.shoppy.retrofit.ApiBanHang;
 import com.example.shoppy.retrofit.RetrofitClient;
 import com.example.shoppy.ultils.Ultils;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.nex3z.notificationbadge.NotificationBadge;
 
 import java.util.ArrayList;
@@ -91,6 +96,8 @@ public class MainActivity extends AppCompatActivity {
             User user = Paper.book().read("user");
             Ultils.user_current = user;
         }
+
+        getToken();
         anhXa();
         actionBar();
         //STEP 2:
@@ -104,6 +111,28 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Toast.makeText(getApplicationContext(), "Không có internet, vui lòng kết nối!!!", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void getToken(){
+        FirebaseMessaging.getInstance().getToken()
+                .addOnSuccessListener(new OnSuccessListener<String>() {
+                    @Override
+                    public void onSuccess(String s) {
+                        if(!TextUtils.isEmpty(s)){
+                            compositeDisposable.add(apiBanHang.updateToken(Ultils.user_current.getId(),s)
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(
+                                            messageModel -> {
+
+                                            },
+                                            throwable -> {
+                                                Log.d("log", throwable.getMessage());
+                                            }
+                                    ));
+                        }
+                    }
+                });
     }
 
     private void getEventClick() {
@@ -125,15 +154,56 @@ public class MainActivity extends AppCompatActivity {
                         laptop.putExtra("loai", 2);//STEP 14
                         startActivity(laptop);
                         break;
+                    case 3:
+                        Intent manhinh = new Intent(getApplicationContext(),MobileActivity.class);
+                        manhinh.putExtra("loai",3);
+                        startActivity(manhinh);
+                        break;
+                    case 4:
+                        Intent harddrive = new Intent(getApplicationContext(),MobileActivity.class);
+                        harddrive.putExtra("loai",4);
+                        startActivity(harddrive);
+                        break;
                     case 5:
+                        Intent ram = new Intent(getApplicationContext(),MobileActivity.class);
+                        ram.putExtra("loai",5);
+                        startActivity(ram);
+                        break;
+                    case 6:
+                        Intent vga = new Intent(getApplicationContext(),MobileActivity.class);
+                        vga.putExtra("loai",6);
+                        startActivity(vga);
+                        break;
+                    case 7:
+                        Intent mainboard = new Intent(getApplicationContext(),MobileActivity.class);
+                        mainboard.putExtra("loai",7);
+                        startActivity(mainboard);
+                        break;
+                    case 8:
+                        Intent cpu = new Intent(getApplicationContext(),MobileActivity.class);
+                        cpu.putExtra("loai",8);
+                        startActivity(cpu);
+                        break;
+                    case 9:
+                        Intent keyboard = new Intent(getApplicationContext(),MobileActivity.class);
+                        keyboard.putExtra("loai",9);
+                        startActivity(keyboard);
+                        break;
+                    case 10:
+                        Intent mouse = new Intent(getApplicationContext(),MobileActivity.class);
+                        mouse.putExtra("loai",10);
+                        startActivity(mouse);
+                        break;
+                    case 12:
                         Intent donmua = new Intent(getApplicationContext(), XemDonActivity.class);
                         startActivity(donmua);
                         break;
-                    case 6:
+                    case 14:
                         //xoa key user
                         Paper.book().delete("user");
                         Intent dangnhap = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(dangnhap);
+                        FirebaseAuth.getInstance().signOut();
                         finish();
                         break;
                 }

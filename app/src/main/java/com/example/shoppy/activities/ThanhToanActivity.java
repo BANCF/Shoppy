@@ -14,8 +14,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.shoppy.R;
+import com.example.shoppy.model.NotiSendData;
 import com.example.shoppy.retrofit.ApiBanHang;
+import com.example.shoppy.retrofit.ApiPushNotification;
 import com.example.shoppy.retrofit.RetrofitClient;
+import com.example.shoppy.retrofit.RetrofitClientNoti;
 import com.example.shoppy.ultils.EmailSingleton;
 import com.example.shoppy.ultils.Ultils;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,6 +26,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 
 import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 import io.paperdb.Paper;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -109,6 +114,7 @@ public class ThanhToanActivity extends AppCompatActivity {
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(
                                     userModel -> {
+                                        pushNotiUser();
                                         Toast.makeText(getApplicationContext(), "Them don thanh cong", Toast.LENGTH_LONG).show();
                                         //STEP 35: MUA XONG THÌ CLEAR GIỎ HÀNG
                                         Ultils.mangMuaHang.clear();
@@ -125,6 +131,36 @@ public class ThanhToanActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void pushNotiUser() {
+        //get Token tren server
+        compositeDisposable.add(apiBanHang.getToken(1)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(userModel -> {
+                            for (int i = 0; i < userModel.getResult().size(); i++) {
+                                Map<String, String> data = new HashMap<>();
+                                data.put("title", "thong bao");
+                                data.put("body", "Ban co don hang moi");
+                                NotiSendData notiSendData = new NotiSendData(userModel.getResult().get(i).getToken(), data);
+                                ApiPushNotification apiPushNotification = RetrofitClientNoti.getInstance().create(ApiPushNotification.class);
+                                compositeDisposable.add(apiPushNotification.sendNotification(notiSendData)
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(
+                                                notiResponse -> {
+
+                                                },
+                                                throwable -> {
+                                                    Log.d("logg", throwable.getMessage());
+                                                }
+                                        ));
+                            }
+                        }, throwable -> {
+                            Log.d("logg", throwable.getMessage());
+                        }
+                ));
     }
 
     private void initView() {

@@ -2,6 +2,7 @@ package com.example.shoppy.retrofit;
 
 import com.example.shoppy.model.DonHangModel;
 import com.example.shoppy.model.LoaiSpModel;
+import com.example.shoppy.model.MessageModel;
 import com.example.shoppy.model.SanPhamMoiModel;
 import com.example.shoppy.model.UserModel;
 
@@ -34,7 +35,8 @@ public interface ApiBanHang {
             @Field("email") String email,
             @Field("pass") String pass,
             @Field("username") String username,
-            @Field("mobile") String mobile
+            @Field("mobile") String mobile,
+            @Field("uid") String uid
     );
     //DANG NHAP
     @POST("dangnhap.php")
@@ -62,10 +64,23 @@ public interface ApiBanHang {
             @Field("iduser") int id
     );
 
+    @POST("updatetoken.php")
+    @FormUrlEncoded
+    Observable<MessageModel> updateToken(
+            @Field("id") int id,
+            @Field("token") String token
+    );
+
     @POST("timkiem.php")
     @FormUrlEncoded
     Observable<SanPhamMoiModel> search(
             @Field("search") String search
+    );
+
+    @POST("gettoken.php")
+    @FormUrlEncoded
+    Observable<UserModel> getToken(
+            @Field("status") int status
     );
 
 
