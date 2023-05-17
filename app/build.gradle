@@ -37,6 +37,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:21.1.0'
     implementation 'com.google.firebase:firebase-auth-ktx:21.1.0'
     implementation 'com.google.firebase:firebase-messaging-ktx:23.1.2'
+    implementation fileTree(dir: 'E:\\Program_Files\\FileChayAndroid\\DO_AN\\data_shoppee\\data_thanhtoan', include: ['*.aar', '*.jar'], exclude: [])
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.6.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -68,4 +70,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.10.1'
     //Loties
     implementation 'com.airbnb.android:lottie:6.0.0'
+    //zalopay
+    implementation("com.squareup.okhttp3:okhttp:4.6.0")
+    implementation("commons-codec:commons-codec:1.14")
 }

@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
     NotificationBadge badge;
     FrameLayout frameLayout;
 //    String email;
-    ImageView imgSearch;
+    ImageView imgSearch,imgChat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +133,23 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
+        //STEP 52
+        //lay id nguoi nhan tin nhan
+        compositeDisposable.add(apiBanHang.getToken(1)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        userModel -> {
+                            if(userModel.isSuccess()){
+                                Ultils.ID_RECEIVED = String.valueOf(userModel.getResult().get(0).getId());
+
+                            }
+
+                        },
+                        throwable -> {
+                            Log.d("log", throwable.getMessage());
+                        }
+                ));
     }
 
     private void getEventClick() {
@@ -241,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
                                 //Thêm data cho list view
                                 mangLoaiSp = loaiSpModel.getResult();//nối data từ loại sp model vào mangLoaiSp
                                 //STEP 36: dang suat
-                                mangLoaiSp.add(new LoaiSp("Đăng xuất",""));
+                                mangLoaiSp.add(new LoaiSp("Đăng xuất","https://kiemthecaomienphi.files.wordpress.com/2023/05/14_log_out.png?fbclid=IwAR18cxKVjEfYjJ-4LOjc9pcH01C7JYCBDrO9N_ypT0d42A1_ad91Zxscdr8"));
                                 loaiSpAdapter = new LoaiSpAdapter(getApplicationContext(), mangLoaiSp);
                                 listViewMain.setAdapter(loaiSpAdapter);
                             }
@@ -299,6 +316,7 @@ public class MainActivity extends AppCompatActivity {
         badge = findViewById(R.id.menu_soLuong);
         frameLayout = findViewById(R.id.frameGioHang);
         imgSearch = findViewById(R.id.imgSearch);
+        imgChat = findViewById(R.id.imgChat);
 
 
 
@@ -335,6 +353,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),SearchActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        imgChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),ChatActivity.class);
                 startActivity(intent);
             }
         });

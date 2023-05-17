@@ -8,12 +8,12 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarChiTiet"
-        app:titleTextColor="@color/white"
-        app:title="Chi tiết sản phẩm"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/appbar_color"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/appbar_color"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="Chi tiết sản phẩm"
+        app:titleTextColor="@color/white">
 
         <FrameLayout
             android:id="@+id/frameGioHang"
@@ -39,7 +39,7 @@
     <LinearLayout
         android:id="@+id/layout1"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="280dp"
         android:layout_marginTop="5dp"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@+id/toolbarChiTiet">
@@ -58,10 +58,11 @@
 
             <TextView
                 android:id="@+id/tvTenSp"
-                android:layout_marginStart="6dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="5dp"
                 android:text="Tên sản phẩm"
                 android:textSize="20sp"
                 android:textStyle="bold" />

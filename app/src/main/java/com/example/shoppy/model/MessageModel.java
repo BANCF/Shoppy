@@ -4,6 +4,15 @@ public class MessageModel {
     boolean success;
     String message;
     String name;
+    String iddonhang;
+
+    public String getIddonhang() {
+        return iddonhang;
+    }
+
+    public void setIddonhang(String iddonhang) {
+        this.iddonhang = iddonhang;
+    }
 
     public String getName() {
         return name;

@@ -189,16 +189,23 @@ public class LoginActivity extends AppCompatActivity {
             Paper.book().write("email",str_email);
             Paper.book().write("password",str_pass);
             if(user!=null){
-                //user da co dang nhap Firebase
+                //user da co dang nhap Firebase, chua signout
                 dangNhap(str_email,str_pass);
             }else{
                 //user da signout
+                //có 2 nơi quản lí mk: firebase và trên server mýql
                 firebaseAuth.signInWithEmailAndPassword(str_email,str_pass)
                         .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()){
                                     dangNhap(str_email,str_pass);
+                                    progressDialog.dismiss();
+                                    Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+
+                                } else{
+                                    progressDialog.dismiss();
+                                    Toast.makeText(LoginActivity.this,"Vui long kiem tra lai password" , Toast.LENGTH_SHORT).show();//+ task.getException()
                                 }
                             }
                         });

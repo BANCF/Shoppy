@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.shoppy.R;
@@ -27,6 +28,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class DangKiActivity extends AppCompatActivity {
     EditText inputEmail, inputPassword, inputConfirmPassword, inputSdt, inputUserName;
+    TextView gaveAccount;
     Button btnRegister;
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     ApiBanHang apiBanHang;
@@ -71,16 +73,16 @@ public class DangKiActivity extends AppCompatActivity {
             if (str_pass.equals(str_repass)) {
                 //post data
                 firebaseAuth = FirebaseAuth.getInstance();
-                firebaseAuth.createUserWithEmailAndPassword(str_email,str_pass)
+                firebaseAuth.createUserWithEmailAndPassword(str_email, str_pass)
                         .addOnCompleteListener(DangKiActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                if(task.isSuccessful()){
+                                if (task.isSuccessful()) {
                                     FirebaseUser user = firebaseAuth.getCurrentUser();
-                                    if(user!=null){
-                                        postData(str_email,str_pass,str_username,str_mobile, user.getUid());
+                                    if (user != null) {
+                                        postData(str_email, str_pass, str_username, str_mobile, user.getUid());
                                     }
-                                }else {
+                                } else {
                                     Toast.makeText(getApplicationContext(), "Email đã tồn tại", Toast.LENGTH_LONG).show();
 
                                 }
@@ -93,20 +95,20 @@ public class DangKiActivity extends AppCompatActivity {
         }
     }
 
-    private void postData(String str_email,String str_pass,String str_username,String str_mobile,String uid){
+    private void postData(String str_email, String str_pass, String str_username, String str_mobile, String uid) {
         //post data
-        compositeDisposable.add(apiBanHang.dangKi(str_email, str_pass, str_username, str_mobile,uid)
+        compositeDisposable.add(apiBanHang.dangKi(str_email, "onfirebase", str_username, str_mobile, uid)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(userModel -> {
-                            if(userModel.isSuccess()){
+                            if (userModel.isSuccess()) {
 //                                Toast.makeText(getApplicationContext(), "Thành công", Toast.LENGTH_LONG).show();
                                 Ultils.user_current.setEmail(str_email);
-                                Ultils.user_current.setPass(str_pass);
-                                Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+                                Ultils.user_current.setPass("onfirebase");
+                                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                                 startActivity(intent);
                                 finish();
-                            }else {
+                            } else {
                                 Toast.makeText(getApplicationContext(), userModel.getMessage(), Toast.LENGTH_LONG).show();
 
                             }
@@ -119,6 +121,7 @@ public class DangKiActivity extends AppCompatActivity {
     }
 
 
+
     private void initView() {
         apiBanHang = RetrofitClient.getInstance(Ultils.BASE_URL).create(ApiBanHang.class);
 
@@ -128,7 +131,21 @@ public class DangKiActivity extends AppCompatActivity {
         inputSdt = findViewById(R.id.inputSodienthoai);
         btnRegister = findViewById(R.id.btnRegister);
         inputUserName = findViewById(R.id.inputUserName);
+        gaveAccount = findViewById(R.id.gaveAccount);
+
+        gaveAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
+
+
+
+
 
     @Override
     protected void onDestroy() {

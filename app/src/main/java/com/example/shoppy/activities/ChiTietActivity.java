@@ -57,13 +57,13 @@ public class ChiTietActivity extends AppCompatActivity {
             for (int i = 0; i < Ultils.mangGioHang.size(); i++) {
                 if (Ultils.mangGioHang.get(i).getIdSp() == sanPhamMoi.getId()) {
                     Ultils.mangGioHang.get(i).setSoLuong(soLuong + Ultils.mangGioHang.get(i).getSoLuong());
-                    long gia = Long.parseLong(sanPhamMoi.getGiasp()) * Ultils.mangGioHang.get(i).getSoLuong();
-                    Ultils.mangGioHang.get(i).setGiaSp(gia);
+//                    long gia = Long.parseLong(sanPhamMoi.getGiasp()) * Ultils.mangGioHang.get(i).getSoLuong();
+//                    Ultils.mangGioHang.get(i).setGiaSp(gia);
                     flag = true;
                 }
             }
-            if(flag == false){
-                long gia = Long.parseLong(sanPhamMoi.getGiasp()) * soLuong;
+            if (flag == false) {
+                long gia = Long.parseLong(sanPhamMoi.getGiasp());//ỏ nhân số lượng
                 GioHang gioHang = new GioHang();
                 gioHang.setGiaSp(gia);
                 gioHang.setSoLuong(soLuong);
@@ -73,10 +73,9 @@ public class ChiTietActivity extends AppCompatActivity {
                 Ultils.mangGioHang.add(gioHang);
             }
 
-
         } else {
             int soLuong = Integer.parseInt(spinner.getSelectedItem().toString());
-            long gia = Long.parseLong(sanPhamMoi.getGiasp()) * soLuong;
+            long gia = Long.parseLong(sanPhamMoi.getGiasp());//* soLuong
             GioHang gioHang = new GioHang();
             gioHang.setGiaSp(gia);
             gioHang.setSoLuong(soLuong);
@@ -87,7 +86,7 @@ public class ChiTietActivity extends AppCompatActivity {
         }
         //FIX ĐẾM SỐ LƯỢNG SẢN PHẨM(KHÔNG PHẢI LOẠI)
         int totalItem = 0;
-        for(int i=0; i<Ultils.mangGioHang.size(); i++){
+        for (int i = 0; i < Ultils.mangGioHang.size(); i++) {
             totalItem = totalItem + Ultils.mangGioHang.get(i).getSoLuong();
         }
         badge.setText(String.valueOf(totalItem));
@@ -122,14 +121,14 @@ public class ChiTietActivity extends AppCompatActivity {
         frameLayoutGioHang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent giohang= new Intent(getApplicationContext(),GioHangActivity.class);
+                Intent giohang = new Intent(getApplicationContext(), GioHangActivity.class);
                 startActivity(giohang);
             }
         });
-        if(Ultils.mangGioHang !=null){
+        if (Ultils.mangGioHang != null) {
             //FIX ĐẾM SỐ LƯỢNG SẢN PHẨM(KHÔNG PHẢI LOẠI)
             int totalItem = 0;
-            for(int i=0; i<Ultils.mangGioHang.size(); i++){
+            for (int i = 0; i < Ultils.mangGioHang.size(); i++) {
                 totalItem = totalItem + Ultils.mangGioHang.get(i).getSoLuong();
             }
             badge.setText(String.valueOf(totalItem));
@@ -146,14 +145,15 @@ public class ChiTietActivity extends AppCompatActivity {
             }
         });
     }
+
     //STEP 22:
     @Override
     protected void onResume() {
         super.onResume();
-        if(Ultils.mangGioHang !=null){
+        if (Ultils.mangGioHang != null) {
             //FIX ĐẾM SỐ LƯỢNG SẢN PHẨM(KHÔNG PHẢI LOẠI)
             int totalItem = 0;
-            for(int i=0; i<Ultils.mangGioHang.size(); i++){
+            for (int i = 0; i < Ultils.mangGioHang.size(); i++) {
                 totalItem = totalItem + Ultils.mangGioHang.get(i).getSoLuong();
             }
             badge.setText(String.valueOf(totalItem));

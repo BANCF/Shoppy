@@ -48,7 +48,7 @@ public interface ApiBanHang {
 
     @POST("donhang.php")
     @FormUrlEncoded
-    Observable<UserModel> createOrder(
+    Observable<MessageModel> createOrder(//sửa tạm userModel thành messmodel
             @Field("email") String email,
             @Field("sdt") String sdt,
             @Field("tongtien") String tongtien,
@@ -67,6 +67,12 @@ public interface ApiBanHang {
     @POST("updatetoken.php")
     @FormUrlEncoded
     Observable<MessageModel> updateToken(
+            @Field("id") int id,
+            @Field("token") String token
+    );
+    @POST("updatezalopay.php")
+    @FormUrlEncoded
+    Observable<MessageModel> updateZalopay(
             @Field("id") int id,
             @Field("token") String token
     );
